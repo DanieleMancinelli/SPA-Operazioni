@@ -47,23 +47,26 @@
                 return;
             }
 
-            // Prepara i dati da inviare
+            // Prepara i dati da inviare nell'URL
             const operazioneSelezionata = operazione.value;
+            const url = `/calcola?num1=${num1}&num2=${num2}&operazione=${operazioneSelezionata}`;
 
-            // Costruisco l'URL con i parametri della query string
-            const url = `http://127.0.0.1:3245/calcola?num1=${num1}&num2=${num2}&operazione=${operazioneSelezionata}`;
-
-            // Simuliamo l'invio della richiesta GET
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    // Mostra il risultato nella pagina
-                    document.getElementById('risultato').innerText = "Risultato: " + data.risultato;
-                })
-                .catch(error => {
-                    document.getElementById('risultato').innerText = "Errore nella richiesta!";
-                    console.error('Errore:', error);
-                });
+            // Effettua la richiesta GET
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Mostra il risultato nella pagina
+                document.getElementById('risultato').innerText = "Risultato: " + data.risultato;
+            })
+            .catch(error => {
+                document.getElementById('risultato').innerText = "Errore nella richiesta!";
+                console.error('Errore:', error);
+            });
         }
     </script>
 </body>
