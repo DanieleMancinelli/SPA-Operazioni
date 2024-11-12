@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolatrice</title>
+</head>
+<body>
+    <h1>Calcolatrice con Operazioni Matematiche</h1>
+
+    <!-- Input per i numeri -->
+    <label for="num1">Numero 1:</label>
+    <input type="number" id="num1" required><br><br>
+
+    <label for="num2">Numero 2:</label>
+    <input type="number" id="num2" required><br><br>
+
+    <!-- Radio buttons per selezionare l'operazione -->
+    <label><input type="radio" name="operazione" value="addizione"> Somma</label><br>
+    <label><input type="radio" name="operazione" value="sottrazione"> Sottrazione</label><br>
+    <label><input type="radio" name="operazione" value="moltiplicazione"> Moltiplicazione</label><br>
+    <label><input type="radio" name="operazione" value="divisione"> Divisione</label><br><br>
+
+    <!-- Pulsante per inviare la richiesta -->
+    <button onclick="calcola()">Calcola</button>
+
+    <!-- Paragrafo per il risultato -->
+    <p id="risultato"></p>
+
+    <script>
+        function calcola() {
+            // Recupero i valori dagli input
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+            
+            // Verifica se i numeri sono validi
+            if (isNaN(num1) || isNaN(num2)) {
+                document.getElementById('risultato').innerText = "Inserisci numeri validi!";
+                return;
+            }
+
+            // Recupero l'operazione selezionata
+            const operazione = document.querySelector('input[name="operazione"]:checked');
+            
+            if (!operazione) {
+                document.getElementById('risultato').innerText = "Seleziona un'operazione!";
+                return;
+            }
+
+            // Prepara i dati da inviare
+            const operazioneSelezionata = operazione.value;
+
+            // Costruisco l'URL con i parametri della query string
+            const url = `http://127.0.0.1:3245/calcola?num1=${num1}&num2=${num2}&operazione=${operazioneSelezionata}`;
+
+            // Simuliamo l'invio della richiesta GET
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Mostra il risultato nella pagina
+                    document.getElementById('risultato').innerText = "Risultato: " + data.risultato;
+                })
+                .catch(error => {
+                    document.getElementById('risultato').innerText = "Errore nella richiesta!";
+                    console.error('Errore:', error);
+                });
+        }
+    </script>
+</body>
+</html>
